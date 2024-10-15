@@ -11,13 +11,16 @@ class Biology(Model):
     confused_percentage = FloatField()
     discussion = StringField()
 
+    
+
     def json_response(self):
         
         return {
             'id': self.id,
             'concept': self.concept,
-            'related keywrods': self.related_keywords,
-            'archieve': self.archive,
+            'views': self.views,
+            'related keywords': self.related_keywords,
+            'archive': self.archive,
             'confused' : self.confused,
             'discussion' : self.discussion
         }
@@ -30,13 +33,13 @@ class Biology(Model):
         self.archive = True
         self.save()
 
-    def calculate_confused_percentage(self):
-        self.confused_percentage = (self.confused)/(self.views)
-        self.save()
+    # def calculate_confused_percentage(self):
+    #     self.confused_percentage = (self.confused)/(self.views)
+    #     self.save()
     
-    def confused_percentage_json_response(self):
-        return {
-            'id': self.id,
-            'concept': self.concept,
-            'confused percentage': self.confused_percentage
-        }
+    # def confused_percentage_json_response(self):
+    #     return {
+    #         'id': self.id,
+    #         'concept': self.concept,
+    #         'confused percentage': self.confused_percentage
+    #     }
