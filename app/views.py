@@ -17,7 +17,7 @@ def new_concept(args):
 
     new_concept.save()
 
-    return {'fortune': new_concept.json_response()}
+    return {'biology': new_concept.json_response()}
 
 # get all concepts ✅
 @route_get(BASE_URL + 'all')
@@ -27,7 +27,7 @@ def all_concepts(args):
     for concept in Biology.objects.all():
         concept.increase_view()
         concept_list.append(concept.json_response())
-    return {'fortunes':concept_list}
+    return {'biology':concept_list}
 
 
 # get one concept ✅
@@ -35,7 +35,7 @@ def all_concepts(args):
 def one_concept(args):
     if Biology.objects.filter(id=args['id']).exists():
         one_concept = Biology.objects.get(id=args['id'])
-        return {'riddle': one_concept.json_response()}
+        return {'biology': one_concept.json_response()}
     else:
         return {'error': 'no riddle exists'}
 
@@ -46,29 +46,68 @@ def archive(args):
         one_concept = Biology.objects.get(id=args['id']) 
         one_concept.change_archive()
         one_concept.increase_view()
-        return {'fortune': one_concept.json_response()}
+        return {'biology': one_concept.json_response()}
     else:
-        return {'error': 'no rconcept exists'}
+        return {'error': 'no concept exists'}
     
-# view all archived concepts
+# view all archived concepts ✅
+@route_get(BASE_URL + 'all_archived')
+def all_archived(args):
+    archived_list = []
 
-# search for keywords
+    for concept in Biology.objects.all():
+        if concept.archive == True:
+            concept.increase_view()
+            archived_list.append(concept.json_response())
+    return {'biology':archived_list}
+
+# search for keywords ✅
 @route_get(BASE_URL + 'search', args={'keyword':str})
 def search(args):
-    # keyword_list = []
-    # add 'or' so that it appends even if the word appears in the discussion?
+    keyword_list = []
     for object in Biology.objects.all():
         if args['keyword'] in object.concept:
-            # concept.filter(concept__contains=args['keyword']):
-            print("hi")
-            # keyword_list.append(concept.json_response())
-            # concept.increase_view()
-        # elif concept in  Biology.objects.filter(related_keywords__contains=args['keyword']):
-        #     keyword_list.append(concept.json_response())
-        #     concept.increase_view()
-        # elif concept in  Biology.objects.filter(discussion__contains=args['keyword']):
-        #     keyword_list.append(concept.json_response())
-        #     concept.increase_view()
+            keyword_list.append(object.json_response())
+            object.increase_view()
+        elif args['keyword'] in object.related_keywords:
+            keyword_list.append(object.json_response())
+            object.increase_view()
+        elif args['keyword'] in object.discussion:
+            keyword_list.append(object.json_response())
+            object.increase_view()
+        else:
+            return {'error': 'no concept exists, try another keyword!'}
     
-    # return {'concept':keyword_list}
+    return {'biology':keyword_list}
 
+# mark a concept as confusing ✅
+@route_post(BASE_URL + 'confused', args={'id':int})
+def confused(args):
+    if Biology.objects.filter(id=args['id']).exists():
+        one_concept = Biology.objects.get(id=args['id']) 
+        one_concept.mark_as_confused()
+        one_concept.increase_view()
+        return {'biology': one_concept.json_response()}
+    else:
+        return {'error': 'no concept exists'}
+
+# get all concepts in order from most to least confusing ✅
+@route_get(BASE_URL + 'confused_ranked')
+def confused_rank(args):
+    concept_list = []
+    for concept in Biology.objects.order_by("-confused_percentage"):
+        concept.calculate_confused_percentage()
+        concept.increase_view()
+        concept_list.append(concept.confused_percentage_json_response())
+    return {'biology':concept_list}
+
+# add to discussion 
+@route_post(BASE_URL + 'add_to_discussion', args={'id':int, 'discussion':str})
+def add_to_discussion(args):
+    concept.discussion + args[discussion] add_to_disscusion(self):
+    return 
+
+# view discussion
+@route_get(BASE_URL + 'discussion')
+def view_discussion(args):
+.split("|") #dont do this cuz frontend

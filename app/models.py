@@ -7,7 +7,7 @@ class Biology(Model):
     concept = StringField()
     related_keywords = StringField()
     archive = BooleanField()
-    confused = BooleanField()
+    confused = IntegerField()
     confused_percentage = FloatField()
     discussion = StringField()
 
@@ -33,13 +33,19 @@ class Biology(Model):
         self.archive = True
         self.save()
 
-    # def calculate_confused_percentage(self):
-    #     self.confused_percentage = (self.confused)/(self.views)
-    #     self.save()
+    def mark_as_confused(self):
+        self.confused +=1
+        self.save()
+
+    def calculate_confused_percentage(self):
+        self.confused_percentage = (self.confused)/(self.views)
+        self.save()
     
-    # def confused_percentage_json_response(self):
-    #     return {
-    #         'id': self.id,
-    #         'concept': self.concept,
-    #         'confused percentage': self.confused_percentage
-    #     }
+    def confused_percentage_json_response(self):
+        return {
+            'id': self.id,
+            'concept': self.concept,
+            'confused percentage': self.confused_percentage
+        }
+    
+    def add_to_disscusion(self):
