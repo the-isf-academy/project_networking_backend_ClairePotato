@@ -48,4 +48,6 @@ class Biology(Model):
             'confused percentage': self.confused_percentage
         }
     
-    def add_to_disscusion(self):
+    def add_to_discussion(self, new_discussion):
+        self.discussion += "|" + new_discussion
+        self.save()

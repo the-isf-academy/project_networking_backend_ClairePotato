@@ -37,7 +37,7 @@ def one_concept(args):
         one_concept = Biology.objects.get(id=args['id'])
         return {'biology': one_concept.json_response()}
     else:
-        return {'error': 'no riddle exists'}
+        return {'error': 'no concept exists'}
 
 # archive one concept ✅
 @route_post(BASE_URL + 'archive', args={'id':int})
@@ -103,11 +103,9 @@ def confused_rank(args):
 
 # add to discussion 
 @route_post(BASE_URL + 'add_to_discussion', args={'id':int, 'discussion':str})
-def add_to_discussion(args):
-    concept.discussion + args[discussion] add_to_disscusion(self):
-    return 
-
-# view discussion
-@route_get(BASE_URL + 'discussion')
-def view_discussion(args):
-.split("|") #dont do this cuz frontend
+def add(args):
+    if Biology.objects.filter(id=args['id']).exists():
+        concept = Biology.objects.get(id=args['id'])
+        concept.add_to_discussion(args['discussion'])
+        concept.increase_view()
+    return {'biology':concept.json_response()}
