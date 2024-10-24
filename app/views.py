@@ -16,7 +16,6 @@ def new_concept(args):
     )
 
     new_concept.save()
-
     return {'biology': new_concept.json_response()}
 
 # get all concepts ✅
